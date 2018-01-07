@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.steveq.tracker.controller.SmartPlanTrackerController">
+   <children>
+      <VBox prefHeight="182.0" prefWidth="600.0">
+         <children>
+            <HBox prefHeight="75.0" prefWidth="569.0">
+               <children>
+                  <VBox alignment="CENTER" fillWidth="false" minHeight="75.0" prefHeight="75.0" prefWidth="249.0">
+                     <children>
+                        <TextField fx:id="activityTestField" alignment="TOP_LEFT" prefHeight="25.0" prefWidth="200.0" />
+                        <TextField fx:id="projectTextField" prefHeight="25.0" prefWidth="201.0" />
+                     </children>
+                  </VBox>
+                  <Label fx:id="timeLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="250.0" text="Label" />
+                  <Button fx:id="startButton" mnemonicParsing="false" prefHeight="76.0" prefWidth="100.0" text="Button" />
+               </children>
+            </HBox>
+            <Accordion prefHeight="251.0" prefWidth="500.0">
+              <panes>
+                <TitledPane fx:id="todayTitlePane" animated="false" text="Today">
+                     <content>
+                        <TableView fx:id="todayTableView" prefHeight="200.0" prefWidth="200.0">
+                           <columns>
+                              <TableColumn fx:id="todayActivityTableColumn" minWidth="50.0" prefWidth="200.0" text="Activity" />
+                              <TableColumn fx:id="todayProjectTableColumn" prefWidth="200.0" text="Project" />
+                              <TableColumn fx:id="todayTimeTableColumn" prefWidth="100.0" text="Time" />
+                              <TableColumn fx:id="todayDateTableColumn" prefWidth="100.0" text="Date" />
+                           </columns>
+                        </TableView>
+                     </content>
+                </TitledPane>
+                <TitledPane animated="false" text="untitled 2">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </TitledPane>
+                <TitledPane animated="false" text="untitled 3">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </TitledPane>
+              </panes>
+            </Accordion>
+         </children>
+      </VBox>
+   </children>
+</HBox>
