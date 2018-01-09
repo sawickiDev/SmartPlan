@@ -36,6 +36,7 @@ public class MainApp extends Application {
 
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
+            scene.getStylesheets().add(MainApp.class.getResource("tracker/view/SmartPlanStyle.css").toExternalForm());
             primaryStage.setTitle("SmartPlan");
             primaryStage.setResizable(true);
             primaryStage.show();

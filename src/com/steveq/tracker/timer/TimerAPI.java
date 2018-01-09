@@ -1,9 +1,12 @@
 package com.steveq.tracker.timer;
 
+import com.steveq.tracker.service.FileService;
+import com.steveq.tracker.service.FileServiceImpl;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -16,34 +19,52 @@ import java.util.TimerTask;
 public class TimerAPI {
 
     private static final String TIME_FORMAT = "HH:mm:ss";
+    private static final String DATE_FORMAT = "dd/MM/yyy";
     private Timer timer;
 
     private long startTime;
     private LocalTime start;
+    private boolean isRunning = false;
 
     private StringProperty elapsedTimeString;
 
-    private TimerTask timeMeasureTask = new TimerTask() {
-        @Override
-        public void run() {
-            Platform.runLater(() -> {
-                long elapsedTime = getCurrentTimestamp() - startTime;
-                System.out.println(elapsedTime);
-                System.out.println("DATE : " + formatTime(elapsedTime));
-                elapsedTimeString.setValue(formatTime(elapsedTime));
-            });
-        }
-    };
-
     public TimerAPI() {
-        timer = new Timer("Time Measure Timer");
         elapsedTimeString = new SimpleStringProperty("00:00:00");
     }
 
     public void startTicking(){
+        timer = new Timer("Time Measure Timer");
         startTime = getCurrentTimestamp();
         start = LocalTime.now();
-        timer.scheduleAtFixedRate(timeMeasureTask, 0, 1*1000);
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    long elapsedTime = getCurrentTimestamp() - startTime;
+                    System.out.println(elapsedTime);
+                    System.out.println("DATE : " + formatTime(elapsedTime));
+                    elapsedTimeString.setValue(formatTime(elapsedTime));
+                });
+            }
+        }, 0, 1 * 1000);
+        isRunning = true;
+    }
+
+    public void stopTicking(){
+        timer.cancel();
+        isRunning = false;
+    }
+
+    public String getCurrentDateString(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
+        Date currentDate = new Date();
+        return simpleDateFormat.format(currentDate);
+    }
+
+    public Date parseStringToDate(String date) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
+        System.out.println("Parsed Date : " +simpleDateFormat.parse(date));
+        return simpleDateFormat.parse(date);
     }
 
     private String formatTime(long timestamp){
@@ -70,5 +91,9 @@ public class TimerAPI {
 
     public void setElapsedTimeString(String elapsedTimeString) {
         this.elapsedTimeString.set(elapsedTimeString);
+    }
+
+    public boolean isRunning() {
+        return isRunning;
     }
 }

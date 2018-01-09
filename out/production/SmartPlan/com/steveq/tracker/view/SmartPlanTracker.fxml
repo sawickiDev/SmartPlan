@@ -14,12 +14,12 @@
                <children>
                   <VBox alignment="CENTER" fillWidth="false" minHeight="75.0" prefHeight="75.0" prefWidth="249.0">
                      <children>
-                        <TextField fx:id="activityTestField" alignment="TOP_LEFT" prefHeight="25.0" prefWidth="200.0" />
+                        <TextField fx:id="activityTextField" alignment="TOP_LEFT" prefHeight="25.0" prefWidth="200.0" />
                         <TextField fx:id="projectTextField" prefHeight="25.0" prefWidth="201.0" />
                      </children>
                   </VBox>
-                  <Label fx:id="timeLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="250.0" text="Label" />
-                  <Button fx:id="startButton" mnemonicParsing="false" prefHeight="76.0" prefWidth="100.0" text="Button" />
+                  <Label fx:id="timeLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="250.0" text="00:00:00" />
+                  <Button fx:id="startButton" disable="true" mnemonicParsing="false" prefHeight="76.0" prefWidth="100.0" styleClass="button-green" text="GO" />
                </children>
             </HBox>
             <Accordion prefHeight="251.0" prefWidth="500.0">

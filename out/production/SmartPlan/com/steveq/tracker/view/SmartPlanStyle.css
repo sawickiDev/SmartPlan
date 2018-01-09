@@ -1,0 +1,11 @@
+.button-red {
+    -fx-background-color: #db6548;
+    -fx-font-family: Ubuntu;
+    -fx-font-size: 16px
+}
+
+.button-green {
+    -fx-background-color: #83f453;
+    -fx-font-family: Ubuntu;
+    -fx-font-size: 16px
+}

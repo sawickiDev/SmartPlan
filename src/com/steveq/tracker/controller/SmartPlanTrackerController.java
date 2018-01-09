@@ -1,7 +1,12 @@
 package com.steveq.tracker.controller;
 
 import com.steveq.tracker.model.Task;
-import com.steveq.tracker.timer.TimerAPI;
+import com.steveq.tracker.service.SmartPlanTrackerService;
+import com.steveq.tracker.service.SmartPlanTrackerServiceImpl;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,11 +18,13 @@ import java.util.ResourceBundle;
 
 public class SmartPlanTrackerController implements Initializable{
 
+    private ObservableList<Task> todayTasks = FXCollections.observableArrayList();
+
     @FXML
     private TextField projectTextField;
 
     @FXML
-    private TextField activityTestField;
+    private TextField activityTextField;
 
     @FXML
     private TableColumn<Task, String> todayProjectTableColumn;
@@ -43,25 +50,40 @@ public class SmartPlanTrackerController implements Initializable{
     @FXML
     private TableColumn<Task, String> todayActivityTableColumn;
 
-    private TimerAPI timerAPI;
+    private SmartPlanTrackerService smartPlanTrackerService;
 
     public SmartPlanTrackerController() {
+        smartPlanTrackerService = new SmartPlanTrackerServiceImpl(this);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        timerAPI = new TimerAPI();
 
-        timeLabel.setText(timerAPI.getElapsedTimeString().get());
-        timerAPI.getElapsedTimeString().addListener((observable, oldValue, newValue) -> {
-            System.out.println("NEW VALUE : " + newValue);
-            timeLabel.setText(newValue);
-        });
+        todayTableView.setItems(todayTasks);
+
+        todayActivityTableColumn.setCellValueFactory(rowData -> rowData.getValue().activityProperty());
+        todayProjectTableColumn.setCellValueFactory(rowData -> rowData.getValue().projectProperty());
+        todayTimeTableColumn.setCellValueFactory(rowData -> rowData.getValue().timeProperty());
+        todayDateTableColumn.setCellValueFactory(rowData -> rowData.getValue().dateProperty());
+
+        todayTasks.addAll(smartPlanTrackerService.loadTodayTasks());
 
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                timerAPI.startTicking();
+                smartPlanTrackerService.toggleTimer();
+            }
+        });
+
+        activityTextField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                boolean isNewValueBlank = newValue == null || newValue.trim().equals("");
+
+                if(!isNewValueBlank)
+                    startButton.setDisable(false);
+                else
+                    startButton.setDisable(true);
             }
         });
     }
@@ -74,12 +96,12 @@ public class SmartPlanTrackerController implements Initializable{
         this.projectTextField = projectTextField;
     }
 
-    public TextField getActivityTestField() {
-        return activityTestField;
+    public TextField getActivityTextField() {
+        return activityTextField;
     }
 
-    public void setActivityTestField(TextField activityTestField) {
-        this.activityTestField = activityTestField;
+    public void setActivityTextField(TextField activityTextField) {
+        this.activityTextField = activityTextField;
     }
 
     public Button getStartButton() {
@@ -144,5 +166,13 @@ public class SmartPlanTrackerController implements Initializable{
 
     public void setTodayActivityTableColumn(TableColumn<Task, String> todayActivityTableColumn) {
         this.todayActivityTableColumn = todayActivityTableColumn;
+    }
+
+    public ObservableList<Task> getTodayTasks() {
+        return todayTasks;
+    }
+
+    public void setTodayTasks(ObservableList<Task> todayTasks) {
+        this.todayTasks = todayTasks;
     }
 }

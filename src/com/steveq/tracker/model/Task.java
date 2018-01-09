@@ -67,4 +67,14 @@ public class Task {
     public void setDate(String date) {
         this.date.set(date);
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "activity=" + activity +
+                ", project=" + project +
+                ", time=" + time +
+                ", date=" + date +
+                '}';
+    }
 }
